@@ -113,7 +113,10 @@ class Board
 
       new_board.add_new_piece(new_color,new_pos,new_type)
     end
+    return new_board
   end
+
+
 end
 
 if __FILE__ == $PROGRAM_NAME
@@ -125,7 +128,15 @@ if __FILE__ == $PROGRAM_NAME
   puts
   p b.grid[2][2].moves
   puts
-  p b.in_check?(:b)
+  puts  "Is the black king in check? #{b.in_check?(:b)}"
+
+  c = b.dup
+  old_king = b.grid[3][4]
+  old_queen = b.grid[2][2]
+
+  new_king = c.grid[3][4]
+  new_queen = c.grid[2][2]
+  puts "KING SAME? #{new_king == old_king} & QUEEN SAME? #{new_queen == old_queen}"
   # until false == true
   #   d.render
   #   d.get_input
