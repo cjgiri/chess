@@ -61,7 +61,7 @@ class Board
     p.color == :w ? @white_pieces << p : @black_pieces << p
   end
 
-  def in_check(color)
+  def in_check?(color)
     king = other_pieces = nil
     case color
     when :w
@@ -81,6 +81,15 @@ class Board
     end
   end
 
+  def checkmate?(color)
+    case color
+    when :w
+      own_pieces = white_pieces
+    when :b
+      own_pieces = black_pieces
+    end
+    return in_check?(color) && own_pieces.all? { |piece| piece.valid_moves.empty?}
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
@@ -92,7 +101,7 @@ if __FILE__ == $PROGRAM_NAME
   puts
   p b.grid[2][2].moves
   puts
-  p b.in_check(:b)
+  p b.in_check?(:b)
   # until false == true
   #   d.render
   #   d.get_input

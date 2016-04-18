@@ -16,7 +16,10 @@ class Piece
   end
 
   def moves
-    @possible_moves.dup
+  end
+
+  def valid_moves
+
   end
 
   private
