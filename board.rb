@@ -3,7 +3,7 @@ require_relative 'display.rb'
 # require 'byebug'
 
 class Board
-  attr_reader :grid
+  attr_reader :grid, :black_pieces, :white_pieces
 
   def initialize
     @grid= Array.new(8) {Array.new(8)}
@@ -18,6 +18,8 @@ class Board
     #     row[index] = Piece.new(:b,self)
     #   end
     # end
+    @black_pieces = []
+    @white_pieces = []
   end
 
   # def inspect
@@ -56,6 +58,27 @@ class Board
       p = Pawn.new(color,self,pos)
     end
     grid[pos[0]][pos[1]] = p
+    p.color == :w ? @white_pieces << p : @black_pieces << p
+  end
+
+  def in_check(color)
+    king = other_pieces = nil
+    case color
+    when :w
+      other_pieces = black_pieces
+      king_idx = white_pieces.index { |p| p.is_a?(King) }
+      king = white_pieces[king_idx]
+    when :b
+      other_pieces = white_pieces
+      king_idx = black_pieces.index { |p| p.is_a?(King) }
+      king = black_pieces[king_idx]
+    else
+      raise "What is going on"
+    end
+
+    other_pieces.any? do |p|
+      p.moves.include?(king.pos)
+    end
   end
 
 end
@@ -63,11 +86,13 @@ end
 if __FILE__ == $PROGRAM_NAME
   b=Board.new
   d=Display.new(b)
-  b.add_new_piece(:b,[3,3],:R)
-  p b.grid[3][3].moves
-  puts
+  b.add_new_piece(:b,[3,4],:K)
   b.add_new_piece(:w,[2,2],:Q)
+  p b.grid[3][4].moves
+  puts
   p b.grid[2][2].moves
+  puts
+  p b.in_check(:b)
   # until false == true
   #   d.render
   #   d.get_input
