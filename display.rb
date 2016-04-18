@@ -39,22 +39,26 @@ class Display
     @board.grid.map.with_index do |row, i|
       row.map.with_index do |piece, j|
         color_options = colors_for(i, j)
-        piece.to_s.colorize(color_options)
+        if [i,j] == @cursor_pos
+          piece.to_s.colorize(color_options).blink.bold.swap
+        else
+          piece.to_s.colorize(color_options)
+        end
       end
     end
   end
 
   def colors_for(i, j)
     if [i, j] == @cursor_pos
-      bg = :light_red
+      bg = :light_yellow
     elsif (i + j).odd?
-      bg = :light_blue
+      bg = :light_black
     else
-      bg = :blue
+      bg = :light_white
     end
-    color = :green
+    color = :light_yellow
     unless @board.grid[i][j].nil?
-      color = @board.grid[i][j].color == :w ? :white : :black
+      color = @board.grid[i][j].color == :w ? :blue : :red
     end
     { background: bg, color: color }
   end

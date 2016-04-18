@@ -35,10 +35,11 @@ class Board
   end
 
 end
-
-b=Board.new
-d=Display.new(b)
-until false == true
-  d.render
-  d.get_input
+if __FILE__ == $PROGRAM_NAME
+  b=Board.new
+  d=Display.new(b)
+  until false == true
+    d.render
+    d.get_input
+  end
 end

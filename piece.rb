@@ -7,8 +7,8 @@ class Piece
   end
 
   def to_s
-    return "W" if @color == :w
-    return "B"
+    return " W " if @color == :w
+    return " B "
   end
 
 end
@@ -16,7 +16,7 @@ end
 class NilClass
 
   def to_s
-    " "
+    "   "
   end
 
 end
