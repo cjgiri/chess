@@ -68,6 +68,10 @@ class Display
     STDIN.echo = false
     STDIN.raw!
     output = STDIN.getc.chr
+    if output == "\e" then
+      output << STDIN.read_nonblock(3) rescue nil
+      output << STDIN.read_nonblock(2) rescue nil
+    end
     STDIN.echo = true
     STDIN.cooked!
 
