@@ -90,6 +90,30 @@ class Board
     end
     return in_check?(color) && own_pieces.all? { |piece| piece.valid_moves.empty?}
   end
+
+  def dup
+    new_board = Board.new
+    (white_pieces+black_pieces).each do |piece|
+      new_pos, new_color = piece.pos, piece.color
+      new_type = nil
+      case piece.class
+      when Rook
+        new_type = :R
+      when Knight
+        new_type = :N
+      when Bishop
+        new_type = :B
+      when Queen
+        new_type = :Q
+      when King
+        new_type = :K
+      when Pawn
+        new_type = :p
+      end
+
+      new_board.add_new_piece(new_color,new_pos,new_type)
+    end
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
