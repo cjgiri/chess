@@ -64,8 +64,11 @@ class Display
   end
 
   def render
-    system("clear")
     build_grid.each { |row| puts row.join }
+  end
+
+  def clear
+    system("clear")
   end
 
   def read_char

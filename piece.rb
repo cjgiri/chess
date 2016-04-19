@@ -10,6 +10,10 @@ class Piece
     # @possible_moves = []
   end
 
+  def inspect
+    "CLASS: #{self.class} COLOR: #{color} POS: #{pos}"
+  end
+
   def to_s
     return " W " if @color == :w
     return " B "
@@ -18,8 +22,17 @@ class Piece
   def moves
   end
 
-  def valid_moves
+  def move_piece(new_pos)
+    @pos = new_pos
+  end
 
+  def valid_moves
+    moves.select do |move|
+      # debugger if move == [4,3]
+      new_board = board.dup
+      new_board.move(pos,move)
+      !new_board.in_check?(color)
+    end
   end
 
   private
@@ -66,6 +79,10 @@ class SteppingPiece < Piece
 end
 
 class Bishop < SlidingPiece
+
+  def to_s
+    " B "
+  end
   def move_dirs
     [[-1, -1],     [-1, 1],
             #center
@@ -74,6 +91,10 @@ class Bishop < SlidingPiece
 end
 
 class Rook < SlidingPiece
+
+  def to_s
+    " R "
+  end
   def move_dirs
            [[-1, 0],
     [0, -1],        [0, 1],
@@ -82,6 +103,10 @@ class Rook < SlidingPiece
 end
 
 class Queen < SlidingPiece
+
+  def to_s
+    " Q "
+  end
   def move_dirs
     [[-1, -1], [-1, 0], [-1, 1],
      [ 0, -1],          [0, 1],
@@ -90,6 +115,9 @@ class Queen < SlidingPiece
 end
 
 class Knight < SteppingPiece
+  def to_s
+    " N "
+  end
   def move_dirs
     [      [-2, -1], [-2, 1],
     [-1, -2],              [-1, 2],
@@ -103,6 +131,10 @@ class King < SteppingPiece
     [[-1, -1], [-1, 0], [-1, 1],
      [ 0, -1],          [0, 1],
      [ 1, -1], [ 1, 0], [1, 1 ]]
+  end
+  def to_s
+    " K "
+    # " \u265A ".encode('utf-8')
   end
 end
 
