@@ -148,6 +148,10 @@ class Pawn < Piece
     out << [ out[0][0]*2,out[0][1] ] unless moved
     out
   end
+
+  def to_s
+    " p "
+  end
 end
 
 

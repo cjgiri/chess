@@ -1,4 +1,4 @@
-require_relative 'game.rb'
+require_relative 'chess.rb'
 require 'byebug'
 
 def test_dup
@@ -49,6 +49,13 @@ def test_checkmate
   puts  "The black king can move: #{b.grid[7][0].valid_moves}"
 end
 
+def test_reset
+  b = Board.new
+  b.reset
+  d = Display.new(b)
+  d.render
+end
+
 if __FILE__ == $PROGRAM_NAME
-  test_checkmate
+  test_reset
 end

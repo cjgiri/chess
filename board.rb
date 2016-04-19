@@ -14,6 +14,25 @@ class Board
   # def inspect
   #
   # end
+  def reset
+    black = [ [:R,:N,:B,:Q,:K,:B,:N,:R],
+              [:p,:p,:p,:p,:p,:p,:p,:p] ]
+
+    white = [ [:p,:p,:p,:p,:p,:p,:p,:p],
+              [:R,:N,:B,:Q,:K,:B,:N,:R] ]
+
+    grid.first(2).each_with_index do |row,row_idx|
+      row.each_with_index do |el,col_idx|
+        add_new_piece(:b,[row_idx,col_idx],black[row_idx][col_idx])
+      end
+    end
+
+    grid.last(2).each_with_index do |row,row_idx|
+      row.each_with_index do |el,col_idx|
+        add_new_piece(:w,[row_idx+6,col_idx],white[row_idx][col_idx])
+      end
+    end
+  end
 
   def piece(row,col)
     grid[row][col].color
