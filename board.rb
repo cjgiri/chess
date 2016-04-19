@@ -31,6 +31,14 @@ class Board
   end
 
   def move(start_pos,end_pos)
+    # call valid moves on pawn at start_pos
+    row = start_pos[0]
+    col = start_pos[1]
+    raise "Invalid Move!" unless grid[row][col].valid_moves.include?(end_pos)
+    move!(start_pos,end_pos)
+  end
+
+  def move!(start_pos,end_pos)
     # debugger
     if grid[*start_pos].nil? || !Board.in_bounds?(end_pos)
       raise ArgumentError
@@ -167,8 +175,8 @@ if __FILE__ == $PROGRAM_NAME
   d.render
   puts
 
-  b.move([3,3],[7,0])
-  b.move([2,2],[1,0])
+  b.move!([3,3],[7,0])
+  b.move!([2,2],[1,0])
   b.add_new_piece(:b,[4,3],:B)
   b.add_new_piece(:w,[1,6],:B)
   b.add_new_piece(:w,[0,1],:R)

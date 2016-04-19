@@ -30,7 +30,7 @@ class Piece
     moves.select do |move|
       # debugger if move == [4,3]
       new_board = board.dup
-      new_board.move(pos,move)
+      new_board.move!(pos,move)
       !new_board.in_check?(color)
     end
   end
