@@ -40,29 +40,39 @@ class Piece
 end
 
 class SlidingPiece < Piece
-  def moves
-    possible_moves = []
+  def move_offsetter
+    offsets = []
     move_dirs.each do |dir|
+      direction = []
       (1..7).each do |mult|
         poss_move_x = mult * dir[0] + pos[0]
         poss_move_y = mult * dir[1] + pos[1]
         poss_move = [poss_move_x, poss_move_y]
         break unless Board.in_bounds?(poss_move)
+        direction << poss_move
+      end
+      offsets << direction
+    end
+    offsets
+  end
 
-        # if board[poss_move].nil?
-        if board.grid[poss_move_x][poss_move_y].nil?
-          possible_moves << poss_move
-        elsif board.piece(*poss_move) != color
-          possible_moves << poss_move
+  def moves
+    possible_moves = []
+    directions = move_offsetter
+    directions.each do |direction|
+      direction.each do |offset|
+        if board[offset].nil?
+          possible_moves << offset
+        elsif board[offset].color != color
+          possible_moves << offset
           break
         else
           break
         end
-
       end
     end
 
-    return possible_moves
+    possible_moves
   end
 end
 
@@ -74,7 +84,7 @@ class SteppingPiece < Piece
 
     possible_moves.select do |poss_move|
       Board.in_bounds?(poss_move) &&
-      (board.grid[poss_move[0]][poss_move[1]].nil? ||
+      (board[poss_move].nil? ||
       board.piece(*poss_move) != color)
     end
   end
@@ -141,15 +151,17 @@ class King < SteppingPiece
 end
 
 class Pawn < SteppingPiece
-  attr_reader :moved
+  # attr_reader :moved
   def initialize(color, board, pos=[0,0])
-    @moved = false
     super
+  end
+
+  def moved
+    color == :w ? pos[0] != 6 : pos[0] != 1
   end
 
   def move_dirs
     # TODO add diagonal taking functionality
-    #change moved to true
     out = []
     out << (color == :w ? [-1,0] : [1,0])
     out << [ out[0][0]*2,out[0][1] ] unless moved

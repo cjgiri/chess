@@ -36,11 +36,23 @@ class Board
     grid[row][col].color
   end
 
+  def [](pos)
+    row = pos[0]
+    col = pos[1]
+    grid[row][col]
+  end
+
+  def []=(pos,new_piece)
+    row = pos[0]
+    col = pos[1]
+    grid[row][col] = new_piece
+  end
+
   def move(start_pos,end_pos,color)
-    row = start_pos[0]
-    col = start_pos[1]
-    raise "Invalid Move! Causes a check!" unless grid[row][col].valid_moves.include?(end_pos)
-    raise "Invalid Move! Not your piece!" unless grid[row][col].color == color
+    # TODO raise different error for causing king to still be in check next turn
+    raise "Invalid Move! No piece there!" if self[start_pos].nil?
+    raise "Invalid Move! Not a legal move!" unless self[start_pos].valid_moves.include?(end_pos)
+    raise "Invalid Move! Not your piece!" unless self[start_pos].color == color
     move!(start_pos,end_pos)
   end
 
@@ -48,14 +60,17 @@ class Board
     if grid[*start_pos].nil? || !Board.in_bounds?(end_pos)
       raise ArgumentError
     end
-    rm_piece = grid[end_pos[0]][end_pos[1]]
-    grid[end_pos[0]][end_pos[1]] = grid[start_pos[0]][start_pos[1]]
-    grid[start_pos[0]][start_pos[1]].move_piece(end_pos)
-    grid[start_pos[0]][start_pos[1]] = NullPiece.instance 
+
+    rm_piece = self[end_pos]
+    self[end_pos] = self[start_pos]
+    self[start_pos].move_piece(end_pos)
+    self[start_pos] = NullPiece.instance
+
     unless rm_piece.nil?
       pieces = rm_piece.color == :w ? white_pieces : black_pieces
       pieces.delete_if { |x| x.object_id == rm_piece.object_id }
     end
+
     return rm_piece
   end
 
