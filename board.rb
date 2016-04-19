@@ -38,10 +38,11 @@ class Board
     grid[row][col].color
   end
 
-  def move(start_pos,end_pos)
+  def move(start_pos,end_pos,color)
     row = start_pos[0]
     col = start_pos[1]
-    raise "Invalid Move!" unless grid[row][col].valid_moves.include?(end_pos)
+    raise "Invalid Move! Causes a check!" unless grid[row][col].valid_moves.include?(end_pos)
+    raise "Invalid Move! Not your piece!" unless grid[row][col].color == color
     move!(start_pos,end_pos)
   end
 
