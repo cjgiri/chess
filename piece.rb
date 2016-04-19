@@ -1,3 +1,4 @@
+require 'singleton'
 require 'byebug'
 
 class Piece
@@ -28,7 +29,7 @@ class Piece
   def valid_moves
     moves.select do |move|
       new_board = board.dup
-      new_board.move!(pos,move)
+      new_board.move!(pos, move)
       !new_board.in_check?(color)
     end
   end
@@ -43,10 +44,12 @@ class SlidingPiece < Piece
     possible_moves = []
     move_dirs.each do |dir|
       (1..7).each do |mult|
-        poss_move_x = mult*dir[0]+pos[0]
-        poss_move_y = mult*dir[1]+pos[1]
-        poss_move = [poss_move_x,poss_move_y]
+        poss_move_x = mult * dir[0] + pos[0]
+        poss_move_y = mult * dir[1] + pos[1]
+        poss_move = [poss_move_x, poss_move_y]
         break unless Board.in_bounds?(poss_move)
+
+        # if board[poss_move].nil?
         if board.grid[poss_move_x][poss_move_y].nil?
           possible_moves << poss_move
         elsif board.piece(*poss_move) != color
@@ -55,6 +58,7 @@ class SlidingPiece < Piece
         else
           break
         end
+
       end
     end
 
@@ -66,11 +70,12 @@ class SteppingPiece < Piece
   def moves
     possible_moves = move_dirs.map do |offset|
       [ pos[0] + offset[0], pos[1] + offset[1] ]
-    end.select{ |poss_move| Board.in_bounds?(poss_move) }
+    end
 
     possible_moves.select do |poss_move|
-      board.grid[poss_move[0]][poss_move[1]].nil? ||
-      board.piece(*poss_move) != color
+      Board.in_bounds?(poss_move) &&
+      (board.grid[poss_move[0]][poss_move[1]].nil? ||
+      board.piece(*poss_move) != color)
     end
   end
 end
@@ -156,11 +161,12 @@ class Pawn < SteppingPiece
   end
 end
 
-
-class NilClass
-
+class NullPiece
+  include Singleton
+  def nil?
+    true
+  end
   def to_s
     "   "
   end
-
 end

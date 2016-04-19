@@ -6,14 +6,12 @@ class Board
   attr_reader :grid, :black_pieces, :white_pieces
 
   def initialize
-    @grid= Array.new(8) {Array.new(8)}
+    @grid= Array.new(8) {Array.new(8) { NullPiece.instance }}
     @black_pieces = []
     @white_pieces = []
   end
 
-  # def inspect
-  #
-  # end
+
   def reset
     black = [ [:R,:N,:B,:Q,:K,:B,:N,:R],
               [:p,:p,:p,:p,:p,:p,:p,:p] ]
@@ -53,7 +51,7 @@ class Board
     rm_piece = grid[end_pos[0]][end_pos[1]]
     grid[end_pos[0]][end_pos[1]] = grid[start_pos[0]][start_pos[1]]
     grid[start_pos[0]][start_pos[1]].move_piece(end_pos)
-    grid[start_pos[0]][start_pos[1]] = nil
+    grid[start_pos[0]][start_pos[1]] = NullPiece.instance 
     unless rm_piece.nil?
       pieces = rm_piece.color == :w ? white_pieces : black_pieces
       pieces.delete_if { |x| x.object_id == rm_piece.object_id }
