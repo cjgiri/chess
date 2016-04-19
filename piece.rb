@@ -135,7 +135,8 @@ class King < SteppingPiece
   end
 end
 
-class Pawn < Piece
+class Pawn < SteppingPiece
+  attr_reader :moved
   def initialize(color, board, pos=[0,0])
     @moved = false
     super
@@ -143,8 +144,9 @@ class Pawn < Piece
 
   def move_dirs
     # TODO add diagonal taking functionality
+    #change moved to true
     out = []
-    out << color == :w ? [-1,0] : [1,0]
+    out << (color == :w ? [-1,0] : [1,0])
     out << [ out[0][0]*2,out[0][1] ] unless moved
     out
   end
