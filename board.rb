@@ -7,17 +7,6 @@ class Board
 
   def initialize
     @grid= Array.new(8) {Array.new(8)}
-    # @grid.first(2).each do |row|
-    #   row.length.times do |index|
-    #     row[index] = Piece.new(:w,self)
-    #   end
-    # end
-    #
-    # @grid.last(2).each do |row|
-    #   row.length.times do |index|
-    #     row[index] = Piece.new(:b,self)
-    #   end
-    # end
     @black_pieces = []
     @white_pieces = []
   end
@@ -31,7 +20,6 @@ class Board
   end
 
   def move(start_pos,end_pos)
-    # call valid moves on pawn at start_pos
     row = start_pos[0]
     col = start_pos[1]
     raise "Invalid Move!" unless grid[row][col].valid_moves.include?(end_pos)
@@ -39,7 +27,6 @@ class Board
   end
 
   def move!(start_pos,end_pos)
-    # debugger
     if grid[*start_pos].nil? || !Board.in_bounds?(end_pos)
       raise ArgumentError
     end
@@ -137,60 +124,4 @@ class Board
     return new_board
   end
 
-
-end
-
-def test_dup
-  b=Board.new
-  d=Display.new(b)
-  b.add_new_piece(:b,[3,3],:K)
-  b.add_new_piece(:w,[2,2],:Q)
-  c = b.dup
-  old_king = b.grid[3][3]
-  old_queen = b.grid[2][2]
-  f=Display.new(c)
-  c.move([3,3],[6,6])
-  d.render
-  f.render
-
-  new_king = c.grid[6][6]
-  new_queen = c.grid[2][2]
-  puts "KING SAME? #{new_king == old_king} & QUEEN SAME? #{new_queen == old_queen}"
-
-end
-
-if __FILE__ == $PROGRAM_NAME
-  b=Board.new
-  d=Display.new(b)
-  b.add_new_piece(:b,[3,3],:K)
-  b.add_new_piece(:w,[2,2],:Q)
-  puts "King can move: #{b.grid[3][3].moves}"
-  puts
-  puts "Queen can move: #{b.grid[2][2].moves}"
-  puts
-  puts  "Is the black king in check? #{b.in_check?(:b)}"
-  puts  "Is the black king in checkmate? #{b.checkmate?(:b)}"
-  puts  "The black king can move: #{b.grid[3][3].valid_moves}"
-
-  d.render
-  puts
-
-  b.move!([3,3],[7,0])
-  b.move!([2,2],[1,0])
-  b.add_new_piece(:b,[4,3],:B)
-  b.add_new_piece(:w,[1,6],:B)
-  b.add_new_piece(:w,[0,1],:R)
-
-  d.render
-
-  puts  "Is the black king in check? #{b.in_check?(:b)}"
-  puts  "Is the black king in checkmate? #{b.checkmate?(:b)}"
-  puts  "The black king can move: #{b.grid[7][0].valid_moves}"
-
-
-
-  # until false == true
-  #   d.render
-  #   d.get_input
-  # end
 end

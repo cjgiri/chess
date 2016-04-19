@@ -7,7 +7,6 @@ class Piece
     @color = color
     @pos = pos
     @board = board
-    # @possible_moves = []
   end
 
   def inspect
@@ -28,7 +27,6 @@ class Piece
 
   def valid_moves
     moves.select do |move|
-      # debugger if move == [4,3]
       new_board = board.dup
       new_board.move!(pos,move)
       !new_board.in_check?(color)
@@ -49,7 +47,6 @@ class SlidingPiece < Piece
         poss_move_y = mult*dir[1]+pos[1]
         poss_move = [poss_move_x,poss_move_y]
         break unless Board.in_bounds?(poss_move)
-        # byebug if board.piece(*poss_move) != color
         if board.grid[poss_move_x][poss_move_y].nil?
           possible_moves << poss_move
         elsif board.piece(*poss_move) != color
