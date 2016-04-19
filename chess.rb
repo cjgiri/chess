@@ -18,6 +18,7 @@ class Game
   end
 
   def play
+    # TODO check for ties here
     until board.checkmate?(:b) || board.checkmate?(:w)
       current_player = players.first
       begin
@@ -30,6 +31,8 @@ class Game
       end
       @players = players.drop(1) + [current_player]
     end
+    winner =  board.checkmate?(:b) ? "White" : "Black"
+    puts "#{winner} won!"
   end
 
 end

@@ -150,10 +150,28 @@ class King < SteppingPiece
   end
 end
 
-class Pawn < SteppingPiece
-  # attr_reader :moved
+class Pawn < Piece
   def initialize(color, board, pos=[0,0])
     super
+  end
+
+  def moves
+    possible_moves = move_dirs.map do |offset|
+      [ pos[0] + offset[0], pos[1] + offset[1] ]
+    end
+
+    possible_moves = possible_moves.select do |poss_move|
+      Board.in_bounds?(poss_move) && board[poss_move].nil?
+    end
+
+    return [] if possible_moves.empty?
+
+    possibles = [ [ possible_moves[0][0], possible_moves[0][1] + 1 ],
+                  [ possible_moves[0][0], possible_moves[0][1] - 1 ] ]
+    possibles.each do |poss|
+      possible_moves << poss if Board.in_bounds?(poss) && !board[poss].nil? && board[poss].color != color
+    end
+    possible_moves
   end
 
   def moved
