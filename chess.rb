@@ -19,7 +19,8 @@ class Game
 
   def play
     # TODO check for ties here
-    until board.checkmate?(:b) || board.checkmate?(:w)
+    current_player = players.first
+    until board.checkmate?(:b) || board.checkmate?(:w) || board.draw?(current_player.color)
       current_player = players.first
       begin
         move = current_player.play_turn

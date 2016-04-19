@@ -5,7 +5,7 @@ require 'byebug'
 class Board
   attr_reader :grid, :black_pieces, :white_pieces, :unicode
 
-  def initialize(unicode = true)
+  def initialize(unicode = false)
     @grid= Array.new(8) {Array.new(8) { NullPiece.instance }}
     @black_pieces = []
     @white_pieces = []
@@ -121,13 +121,13 @@ class Board
   end
 
   def checkmate?(color)
-    case color
-    when :w
-      own_pieces = white_pieces
-    when :b
-      own_pieces = black_pieces
-    end
+    own_pieces = ( color == :w ? white_pieces : black_pieces )
     return in_check?(color) && own_pieces.all? { |piece| piece.valid_moves.empty?}
+  end
+
+  def draw?(color)
+    pieces = ( color == :w ? white_pieces : black_pieces )
+    pieces.all? { |piece| piece.valid_moves.empty? }
   end
 
   def dup

@@ -49,6 +49,18 @@ def test_checkmate
   puts  "The black king can move: #{b.grid[7][0].valid_moves}"
 end
 
+def test_draw
+  b=Board.new
+  d=Display.new(b)
+  b.add_new_piece(:b,[0,7],:K)
+  b.add_new_piece(:w,[1,0],:R)
+  b.add_new_piece(:w,[7,6],:R)
+
+  d.render
+  puts  "Is the black king in draw #{b.draw?(:b)}"
+
+end
+
 def test_reset
   b = Board.new
   b.reset
@@ -57,5 +69,5 @@ def test_reset
 end
 
 if __FILE__ == $PROGRAM_NAME
-  test_reset
+  test_draw
 end
