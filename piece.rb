@@ -19,9 +19,6 @@ class Piece
     return " B "
   end
 
-  def moves
-  end
-
   def move_piece(new_pos)
     @pos = new_pos
   end
@@ -40,22 +37,6 @@ class Piece
 end
 
 class SlidingPiece < Piece
-  def move_offsetter
-    offsets = []
-    move_dirs.each do |dir|
-      direction = []
-      (1..7).each do |mult|
-        poss_move_x = mult * dir[0] + pos[0]
-        poss_move_y = mult * dir[1] + pos[1]
-        poss_move = [poss_move_x, poss_move_y]
-        break unless Board.in_bounds?(poss_move)
-        direction << poss_move
-      end
-      offsets << direction
-    end
-    offsets
-  end
-
   def moves
     possible_moves = []
     directions = move_offsetter
@@ -74,6 +55,24 @@ class SlidingPiece < Piece
 
     possible_moves
   end
+
+  private
+  def move_offsetter
+    offsets = []
+    move_dirs.each do |dir|
+      direction = []
+      (1..7).each do |mult|
+        poss_move_x = mult * dir[0] + pos[0]
+        poss_move_y = mult * dir[1] + pos[1]
+        poss_move = [poss_move_x, poss_move_y]
+        break unless Board.in_bounds?(poss_move)
+        direction << poss_move
+      end
+      offsets << direction
+    end
+    offsets
+  end
+
 end
 
 class SteppingPiece < Piece
@@ -85,7 +84,7 @@ class SteppingPiece < Piece
     possible_moves.select do |poss_move|
       Board.in_bounds?(poss_move) &&
       (board[poss_move].nil? ||
-      board.piece(*poss_move) != color)
+      board[poss_move].color != color)
     end
   end
 end
@@ -95,6 +94,7 @@ class Bishop < SlidingPiece
   def to_s
     board.unicode ? " \u2657 ".encode('utf-8') : " B "
   end
+  private
   def move_dirs
     [[-1, -1],     [-1, 1],
             #center
@@ -107,6 +107,7 @@ class Rook < SlidingPiece
   def to_s
     board.unicode ? " \u2656 ".encode('utf-8') : " R "
   end
+  private
   def move_dirs
            [[-1, 0],
     [0, -1],        [0, 1],
@@ -119,6 +120,7 @@ class Queen < SlidingPiece
   def to_s
     board.unicode ? " \u2655 ".encode('utf-8') : " Q "
   end
+  private
   def move_dirs
     [[-1, -1], [-1, 0], [-1, 1],
      [ 0, -1],          [0, 1],
@@ -130,6 +132,7 @@ class Knight < SteppingPiece
   def to_s
     board.unicode ? " \u2658 ".encode('utf-8') : " N "
   end
+  private
   def move_dirs
     [      [-2, -1], [-2, 1],
     [-1, -2],              [-1, 2],
@@ -139,13 +142,14 @@ class Knight < SteppingPiece
 end
 
 class King < SteppingPiece
+  def to_s
+    board.unicode ? " \u2654 ".encode('utf-8') : " K "
+  end
+  private
   def move_dirs
     [[-1, -1], [-1, 0], [-1, 1],
      [ 0, -1],          [0, 1],
      [ 1, -1], [ 1, 0], [1, 1 ]]
-  end
-  def to_s
-    board.unicode ? " \u2654 ".encode('utf-8') : " K "
   end
 end
 
@@ -173,6 +177,10 @@ class Pawn < Piece
     possible_moves
   end
 
+  def to_s
+    board.unicode ? " \u2659 ".encode('utf-8') : " * "
+  end
+  private
   def moved
     color == :w ? pos[0] != 6 : pos[0] != 1
   end
@@ -184,9 +192,6 @@ class Pawn < Piece
     out
   end
 
-  def to_s
-    board.unicode ? " \u2659 ".encode('utf-8') : " * "
-  end
 end
 
 class NullPiece

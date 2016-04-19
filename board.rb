@@ -33,10 +33,6 @@ class Board
     end
   end
 
-  def piece(row,col)
-    grid[row][col].color
-  end
-
   def [](pos)
     row = pos[0]
     col = pos[1]
@@ -100,7 +96,6 @@ class Board
   end
 
   def in_check?(color)
-    # king = other_pieces = nil
     case color
     when :w
       other_pieces = black_pieces

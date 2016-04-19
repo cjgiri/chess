@@ -29,7 +29,7 @@ class Player
   end
 
   def ack
-    display.read_char
+    display.get_input
   end
 
 end

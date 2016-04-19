@@ -1,8 +1,5 @@
 require 'colorize'
-# require_relative 'cursorable'
 require 'io/console'
-# require_relative 'board.rb'
-
 
 class Display
 
@@ -35,8 +32,22 @@ class Display
     @cursor_pos = [0,0]
   end
 
+  def render
+    build_grid.each { |row| puts row.join }
+  end
+
+  def clear
+    system("clear")
+  end
+
+  def get_input
+    key = KEYMAP[read_char]
+    handle_key(key)
+  end
+
+  private
   def build_grid
-    @board.grid.map.with_index do |row, i|
+    output = @board.grid.map.with_index do |row, i|
       row.map.with_index do |piece, j|
         color_options = colors_for(i, j)
         if [i,j] == @cursor_pos
@@ -46,6 +57,13 @@ class Display
         end
       end
     end
+    output.each_with_index do |row, ind|
+      row.push(" #{ind + 1} ")
+      row.unshift(" #{ind + 1} ")
+    end
+    letters = ['   ',' a ',' b ',' c ',' d ',' e ',' f ',' g ',' h ']
+    output.push(letters)
+    output.unshift(letters)
   end
 
   def colors_for(i, j)
@@ -62,15 +80,6 @@ class Display
     end
     { background: bg, color: color }
   end
-
-  def render
-    build_grid.each { |row| puts row.join }
-  end
-
-  def clear
-    system("clear")
-  end
-
   def read_char
     STDIN.echo = false
     STDIN.raw!
@@ -84,12 +93,6 @@ class Display
 
     return output
   end
-
-  def get_input
-    key = KEYMAP[read_char]
-    handle_key(key)
-  end
-
   def handle_key(key)
     case key
     when :ctrl_c
@@ -107,6 +110,5 @@ class Display
     new_pos = [ @cursor_pos[0] + delta[0], @cursor_pos[1] + delta[1] ]
     @cursor_pos = new_pos if Board.in_bounds?(new_pos)
   end
-
 
 end
