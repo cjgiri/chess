@@ -5,8 +5,8 @@ require 'byebug'
 
 class Game
   attr_reader :board, :display, :players
-  def initialize(*players)
-    @board = Board.new
+  def initialize(unicode, *players)
+    @board = Board.new(unicode)
     @display = Display.new(board)
     board.reset
 
@@ -40,7 +40,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   player1 = Player.new
   player2 = Player.new
-  chess = Game.new(player1,player2)
+  chess = Game.new(false,player1,player2)
   p chess.board.checkmate?(:b)
   chess.play
 end

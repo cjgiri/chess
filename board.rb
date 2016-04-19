@@ -3,12 +3,13 @@ require_relative 'display.rb'
 require 'byebug'
 
 class Board
-  attr_reader :grid, :black_pieces, :white_pieces
+  attr_reader :grid, :black_pieces, :white_pieces, :unicode
 
-  def initialize
+  def initialize(unicode = true)
     @grid= Array.new(8) {Array.new(8) { NullPiece.instance }}
     @black_pieces = []
     @white_pieces = []
+    @unicode = unicode
   end
 
 

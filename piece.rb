@@ -93,7 +93,7 @@ end
 class Bishop < SlidingPiece
 
   def to_s
-    " B "
+    board.unicode ? " \u2657 ".encode('utf-8') : " B "
   end
   def move_dirs
     [[-1, -1],     [-1, 1],
@@ -105,7 +105,7 @@ end
 class Rook < SlidingPiece
 
   def to_s
-    " R "
+    board.unicode ? " \u2656 ".encode('utf-8') : " R "
   end
   def move_dirs
            [[-1, 0],
@@ -117,7 +117,7 @@ end
 class Queen < SlidingPiece
 
   def to_s
-    " Q "
+    board.unicode ? " \u2655 ".encode('utf-8') : " Q "
   end
   def move_dirs
     [[-1, -1], [-1, 0], [-1, 1],
@@ -128,7 +128,7 @@ end
 
 class Knight < SteppingPiece
   def to_s
-    " N "
+    board.unicode ? " \u2658 ".encode('utf-8') : " N "
   end
   def move_dirs
     [      [-2, -1], [-2, 1],
@@ -145,8 +145,7 @@ class King < SteppingPiece
      [ 1, -1], [ 1, 0], [1, 1 ]]
   end
   def to_s
-    " K "
-    # " \u265A ".encode('utf-8')
+    board.unicode ? " \u2654 ".encode('utf-8') : " K "
   end
 end
 
@@ -179,7 +178,6 @@ class Pawn < Piece
   end
 
   def move_dirs
-    # TODO add diagonal taking functionality
     out = []
     out << (color == :w ? [-1,0] : [1,0])
     out << [ out[0][0]*2,out[0][1] ] unless moved
@@ -187,7 +185,7 @@ class Pawn < Piece
   end
 
   def to_s
-    " p "
+    board.unicode ? " \u2659 ".encode('utf-8') : " * "
   end
 end
 
