@@ -1,9 +1,8 @@
 # chess
 
 
-chess is... chess! This is a class coding project that explores object oriented design in Ruby. 
+chess is... chess! This is a class coding project that explores object oriented design in Ruby.
 
-## Features & Implementation
 
 
 
