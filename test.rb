@@ -1,5 +1,4 @@
 require_relative 'chess.rb'
-require 'byebug'
 
 def test_dup
   b=Board.new

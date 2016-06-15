@@ -1,6 +1,5 @@
 require_relative 'piece.rb'
 require_relative 'display.rb'
-require 'byebug'
 
 class Board
   attr_reader :grid, :black_pieces, :white_pieces, :unicode
@@ -76,7 +75,6 @@ class Board
   end
 
   def add_new_piece(color,pos,type)
-    # byebug
     case type
     when :R
       p = Rook.new(color,self,pos)
@@ -102,7 +100,6 @@ class Board
       king_idx = white_pieces.index { |p| p.is_a?(King) }
       king = white_pieces[king_idx]
     when :b
-      # debugger
       other_pieces = white_pieces
       king_idx = black_pieces.index { |p| p.is_a?(King) }
       king = black_pieces[king_idx]
@@ -128,7 +125,6 @@ class Board
   def dup
     new_board = Board.new
     (white_pieces+black_pieces).each do |piece|
-      # byebug
       new_pos, new_color = piece.pos, piece.color
       new_type = nil
       case piece
